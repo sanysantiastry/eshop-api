@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mysql = require('mysql');
 
-class database {
+class Database {
     constructor() {
         this.connection = mysql.createPool({
             connectionLimit: 10,
@@ -23,8 +23,8 @@ class database {
           });
         });
       }
-      
+
 }
 
 
-module.exports = database;
+module.exports = Database;

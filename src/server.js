@@ -1,7 +1,15 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
+const authentication = require('./api/authentication');
+const Database = require('./conf/database');
+const ClientError = require('./exceptions/ClientError');
+const AuthenticationService = require('./services/mysql/AuthenticationService');
+const AuthenticationValidator = require('./validator/authentication');
 
 const init = async () => {
+  const database = new Database();
+  const authenticationService = new AuthenticationService(database);
+  
 
     const server = Hapi.server({
       host: process.env.HOST,
@@ -20,6 +28,35 @@ const init = async () => {
         handler: () => ({
           name: 'Sany Santiastry',
         }),
+    });
+
+    //defines internal plugins
+    await server.register([
+      {
+        plugin: authentication,
+        options: {
+          service: authenticationService,
+          validator: AuthenticationValidator,
+        },
+      }
+    ]);
+
+    // extension
+    server.ext('onPreResponse', (request, h) => {
+      const {response} = request;
+
+      if (response instanceof ClientError) {
+        const newResponse = h.response({
+          status: 'fail',
+          message: response.message,
+        });
+        newResponse.code(response.statusCode);
+        return newResponse;
+      }
+
+      console.log(response);
+
+      return h.continue;
     });
 
     await server.start();

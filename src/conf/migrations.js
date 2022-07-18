@@ -1,6 +1,6 @@
 const migration = require('mysql-migrations');
-const database = require('./database');
+const Database = require('./database');
 
-const database = new database();
+const database = new Database();
 
 migration.init(database.connection, __dirname + '/migrations');
