@@ -8,7 +8,7 @@ class ProductsService {
     constructor(database) {
       this.#database = database;
     }
-    async addProduct(title, price, description) {
+    async addProduct(userId, title, price, description) {
         const id = `product-${nanoid(16)}`
         const query = `INSERT INTO products (id, title, price, description, image)
           VALUES (
@@ -41,7 +41,7 @@ class ProductsService {
     
         return result;
       }
-      async updateProductById(id, {title, price, description}) {
+      async updateProductById(id, userId, {title, price, description}) {
         const queryProduct = `SELECT id FROM products WHERE id = '${id}'`;
     
         const product = await this.#database.query(queryProduct);
