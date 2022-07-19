@@ -2,7 +2,7 @@ require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 
-//authentication
+//
 const authentication = require('./api/authentication');
 const Database = require('./conf/Database');
 const AuthenticationService = require('./services/mysql/AuthenticationService');
@@ -41,7 +41,7 @@ const init = async () => {
     method: 'GET',
     path: '/',
     handler: () => ({
-      name: 'Sany Santiastry',
+      name: 'Fauzia Dewi Amalia',
     }),
   });
 
@@ -69,26 +69,21 @@ const init = async () => {
       plugin: Jwt,
     },
   ]);
-
-
-
   // defines authentication strategy
   server.auth.strategy('eshop_jwt', 'jwt',{
-      keys: process.env.TOKEN_KEY,
-      verify: {
-        aud: false,
-        iss: false,
-        sub: false,
+    keys: process.env.TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
       },
-      validate: (artifacts) => ({
-        isValid: true,
-        credentials: {
-          id: artifacts.decoded.payload.id,
-        },
-      }),
+    }),
   });
-
-
   //defines internal plugin
   await server.register([
     {
@@ -104,16 +99,17 @@ const init = async () => {
       options: {
         service: productsService,
         validator: ProductsValidator,
-      }
+      },
     },
     {
       plugin: carts,
       options: {
-        service: CartsService,
+        service: cartsService,
         validator: CartsValidator,
       },
     },
   ]);
+  
 
   await server.start();
   console.log(`Server running at ${server.info.uri}`);

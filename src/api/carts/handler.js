@@ -29,28 +29,27 @@ class CartsHandler {
   
     async getCartByUserId(request, h) {
         console.log(request.auth);
-        const { id: userId } = request.auth.credentials;
-    
-        const cart = await this.#service.getCartByUserId(userId);
-        let subTotal = 0;
-        let totalItem = 0;
-    
-        cart.forEach((item) => {
-          subTotal += item.price;
-          totalItem += item.quantity;
-        });
-    
-        return {
-          status: 'success',
-          message: 'Data keranjang berhasil diambil',
-          data: {
-            userId,
-            totalItem,
-            subTotal,
-            cart,
-          },
-        };
-        
+    const { id: userId } = request.auth.credentials;
+
+    const cart = await this.#service.getCartByUserId(userId);
+    let subTotal = 0;
+    let totalItem = 0;
+
+    cart.forEach((item) => {
+      subTotal += item.price;
+      totalItem += item.quantity;
+    });
+
+    return {
+      status: 'success',
+      message: 'Data keranjang berhasil diambil',
+      data: {
+        userId,
+        totalItem,
+        subTotal,
+        cart,
+      },
+    };
     }
   
     async putCartByItemId(request, h) {
@@ -78,6 +77,7 @@ class CartsHandler {
           status: 'success',
           message: 'Item dalam keranjang berhasil dihapus',
         };
+      
     }
   }
   

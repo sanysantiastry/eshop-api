@@ -64,7 +64,7 @@ class ProductsHandler {
   const { title, price, description } = request.payload;
   const { id: userId } = request.auth.credentials;
 
-  await this.#ProductsService.updateProductById(id, userId,`` { title, price, description });
+  await this.#ProductsService.updateProductById(id, { title, price, description });
 
   return {
     status: 'success',
