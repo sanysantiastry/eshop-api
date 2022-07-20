@@ -27,13 +27,7 @@ class ProductsService {
     
         return id;
       }
-      async getAllProducts() {
-        const query = 'SELECT * FROM products';
-    
-        const result = await this.#database.query(query);
-    
-        return result;
-      }
+
       async getAllProducts() {
         const query = 'SELECT * FROM products';
     
