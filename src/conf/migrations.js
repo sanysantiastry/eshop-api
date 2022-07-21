@@ -1,5 +1,5 @@
 const migration = require('mysql-migrations');
-const Database = require('./database');
+const Database = require('./Database');
 
 const database = new Database();
 
